@@ -57,7 +57,7 @@ jobs:
           './jvm/target/jvm*.jar' => /home/github/temp/
           './jvm-ui/dist.tar.gz' => /home/github/temp/
         last_ssh: |
-          cd /home/github/test/
+          cd /home/github/temp/
           tar zxf dist.tar.gz
           rm -rf /opt/service/jvm-ui
           mv dist /opt/service/jvm-ui
