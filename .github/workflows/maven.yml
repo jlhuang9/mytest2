@@ -52,13 +52,25 @@ jobs:
         connect_timeout: 30s
         first_ssh: |
           rm -rf /home/github/test
-          ls -la  \necho $WELCOME
           mkdir -p /home/github/test/test1 &&
           mkdir -p /home/github/test/test2 &&
         scp: |
           './jvm/target/jvm*.jar' => /home/github/test/
           './jvm-ui/dist.tar.gz' => /home/github/test/
         last_ssh: |
-          echo $LASTSSH
-          echo $ALI_CLOUD_PORT
-          echo ${{ secrets.ALI_CLOUD_HOST }}
+          cd /home/github/test/
+          tar zxf dist.tar.gz
+          rm -rf /opt/service/jvm-ui
+          mv dist /opt/service/jvm-ui
+          rm -rf /opt/service/jvm/*
+          mv jvm*.jar /opt/service/jvm/jvm.jar
+          cd /opt/service/jvm/
+          pid=`ps -ef | grep "jvm.jar" | grep -v "grep" | awk '{print $2}'`
+          if [ "$pid" = "" ]
+          then
+              echo "jvm.jar is not running"
+          else
+              kill -9 $pid
+              echo "kill pid:$pid"
+          fi
+          nohup jar -jar jvm.jar &
