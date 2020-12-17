@@ -25,7 +25,9 @@ jobs:
         cd jvm-ui
         npm install
         npm run build
-        tar zcf dist.tar.gz dist/*
+        tar zcf dist.tar.gz ./dist
+        ls
+        pwd
         cd ..
 
     - name: maven build
