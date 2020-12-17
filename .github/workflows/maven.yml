@@ -54,8 +54,8 @@ jobs:
           mkdir -p /home/github/test/test1 &&
           mkdir -p /home/github/test/test2 &&
         scp: |
-          '.jvm/target/jvm*.jar' => /home/github/test/
-          '.jvm-ui/dist.tar.gz' => /home/github/test/
+          './jvm/target/jvm*.jar' => /home/github/test/
+          './jvm-ui/dist.tar.gz' => /home/github/test/
         last_ssh: |
           echo $LASTSSH
           echo $ALI_CLOUD_PORT
