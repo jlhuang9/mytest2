@@ -28,7 +28,7 @@ jobs:
       with:
         node-version: 8.10.0
         registry-url: https://registry.npmjs.org/
-      run: |
+    - run: |
         cd jvm-ui
         npm install
         npm run build
