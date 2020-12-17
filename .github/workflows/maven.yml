@@ -51,12 +51,11 @@ jobs:
         port: ${{ secrets.ALI_CLOUD_PORT }}
         connect_timeout: 30s
         first_ssh: |
-          rm -rf /home/github/test
-          mkdir -p /home/github/test/test1 &&
-          mkdir -p /home/github/test/test2 &&
+          rm -rf /home/github/temp
+          mkdir -p /home/github/temp &&
         scp: |
-          './jvm/target/jvm*.jar' => /home/github/test/
-          './jvm-ui/dist.tar.gz' => /home/github/test/
+          './jvm/target/jvm*.jar' => /home/github/temp/
+          './jvm-ui/dist.tar.gz' => /home/github/temp/
         last_ssh: |
           cd /home/github/test/
           tar zxf dist.tar.gz
@@ -67,4 +66,4 @@ jobs:
           cd /opt/service/jvm/
           pid=`ps -ef | grep "jvm.jar" | grep -v "grep" | awk '{print $2}'`
           if [ "$pid" = "" ];           then               echo "jvm.jar is not running";           else               kill -9 $pid;               echo "kill pid:$pid";           fi
-          BUILD_ID=dontKillMe nohup jar -jar jvm.jar &
+          BUILD_ID=dontKillMe nohup java -jar jvm.jar &
