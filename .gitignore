@@ -1,0 +1,16 @@
+.idea
+.classpath
+.project
+*.iml
+*.eml
+target
+*.log
+*.log.*
+*.cache
+*.lock
+/build/
+*.settings
+
+jvm-ui/node_modules
+jvm-ui/dist
+jvm-ui/.idea

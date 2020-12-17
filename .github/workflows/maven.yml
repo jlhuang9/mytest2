@@ -1,0 +1,58 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+
+    - name: npm build
+      uses: actions/setup-node@v1
+      with:
+        node-version: 8.10.0
+        registry-url: https://registry.npmjs.org/
+      run: |
+        cd jvm-ui
+        npm install
+        npm run build
+
+    - name: ssh scp ssh pipelines
+      uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+      env:
+        WELCOME: "ssh scp ssh pipelines"
+        LASTSSH: "Doing something after copying"
+      with:
+        host: ${{ secrets.ALI_CLOUD_HOST }}
+        user: ${{ secrets.ALI_CLOUD_USERNAME }}
+        pass: ${{ secrets.ALI_CLOUD_PASSWORD }}
+        port: ${{ secrets.ALI_CLOUD_PORT }}
+        connect_timeout: 30s
+        first_ssh: |
+          rm -rf /home/github/test
+          ls -la  \necho $WELCOME
+          mkdir -p /home/github/test/test1 &&
+          mkdir -p /home/github/test/test2 &&
+        scp: |
+          '.jvm/target/jvm*.jar' => /home/github/test/
+        last_ssh: |
+          echo $LASTSSH
+          echo $ALI_CLOUD_PORT
+          echo ${{ secrets.ALI_CLOUD_HOST }}
