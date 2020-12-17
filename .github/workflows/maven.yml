@@ -25,12 +25,15 @@ jobs:
         cd jvm-ui
         npm install
         npm run build
-    - name: Set up JDK 1.8
+        tar zcf dist.tar.gz dist/*
+        cd ..
+
+    - name: maven build
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B package -Dmaven.test.skip=true --file pom.xml
 
 
 
@@ -52,6 +55,7 @@ jobs:
           mkdir -p /home/github/test/test2 &&
         scp: |
           '.jvm/target/jvm*.jar' => /home/github/test/
+          '.jvm-ui/dist.tar.gz' => /home/github/test/
         last_ssh: |
           echo $LASTSSH
           echo $ALI_CLOUD_PORT
