@@ -14,7 +14,7 @@ const $ = axios.create({
   withCredentials: true
 });
 var pathConfig = {
-  remotePath : "http://http://148.70.127.52:8082/"
+  remotePath : "http://148.70.127.52:8082/"
 }
 const hintTime = 1500
 export default {
