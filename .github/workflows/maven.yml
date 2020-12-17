@@ -64,4 +64,4 @@ jobs:
           cd /opt/service/jvm/
           pid=`ps -ef | grep "jvm.jar" | grep -v "grep" | awk '{print $2}'`
           if [ "$pid" = "" ];           then               echo "jvm.jar is not running";           else               kill -9 $pid;               echo "kill pid:$pid";           fi
-          BUILD_ID=dontKillMe nohup java -jar jvm.jar &
+          nohup java -jar jvm.jar &
